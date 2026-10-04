@@ -1,6 +1,8 @@
 import { getPosts } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 
+export const dynamic = "force-static";
+
 export async function GET() {
   const items = getPosts().map(
     (post) => `    <item>

@@ -1,6 +1,6 @@
 # Sleek Portfolio
 
-A small, fast personal site: a home page, an MDX blog, and a projects page whose tech stacks come straight from each project's GitHub repo. One 640px column, light and dark themes, and no template copy to delete.
+A small, fast personal site: a home page, an MDX blog, and a projects page with expanding cards. One 640px column, light and dark themes, and no template copy to delete.
 
 I built it for myself. It is MIT licensed, so fork it and make it yours.
 
@@ -11,7 +11,7 @@ I built it for myself. It is MIT licensed, so fork it and make it yours.
 ## Features
 
 - **MDX blog.** Drop an `.mdx` file in `content/blog/` and it shows up on the home page, `/blog`, search, and the RSS feed. Frontmatter is validated with Zod and reading time is worked out for you.
-- **Stacks read from GitHub.** Each project points at its repo. The server reads the `package.json` files you list, maps dependencies to technologies, and renders them with [Simple Icons](https://simpleicons.org). No hand-maintained tag lists.
+- **Tech stacks with real icons.** List each project's technologies in one array and they render with [Simple Icons](https://simpleicons.org). Nothing is fetched, so the projects page is fully static.
 - **Expanding project cards.** Rest the mouse on a card, click it, or focus it and press Enter, and it grows into a larger panel with a longer write-up, highlights, and the full stack, over a blurred backdrop. A hover-opened panel closes when the mouse leaves it; click inside to keep it open. Escape closes it.
 - **Tags and filtering.** Posts carry tags in frontmatter. The blog page filters by tag, and the filter lives in the URL (`/blog?tag=linux`), so tags on a post link straight to the filtered list.
 - **GitHub contribution heatmap.** Fetched from GitHub's public contributions page and drawn as an SVG in your site's accent colour. No token, no third-party embed.
@@ -41,7 +41,7 @@ I built it for myself. It is MIT licensed, so fork it and make it yours.
 
 ## Environment variables
 
-None are required. Every GitHub request uses public endpoints, so there is no token to set up.
+None are required. The contribution heatmap uses a public GitHub page, so there is no token to set up.
 
 | Variable | Purpose |
 | --- | --- |
@@ -78,7 +78,7 @@ These are the files you will touch, roughly in order:
 | `content/blog/` | Posts, one `.mdx` file each |
 | `src/app/globals.css` | Colour tokens for both themes, including `--accent` |
 | `public/avatar.jpg` | Your photo |
-| `public/projects/` | Project screenshots |
+| `src/assets/projects/` | Project screenshots, imported in `content.ts` |
 | `src/app/layout.tsx` | Site metadata and the font |
 
 ### Adding a project
@@ -97,37 +97,20 @@ Add an entry to `PROJECTS` in `src/lib/content.ts`:
     "What makes it worth a look.",
     "One point per line.",
   ],
-  repo: "shubhook/huddle",       // owner/name on GitHub
-  manifests: ["apps/server/package.json", "apps/web/package.json"],
-  fallbackStack: ["typescript", "bun", "websocket"],
+  stack: ["typescript", "bun", "websocket"], // keys from src/lib/tech.ts, in display order
   codeUrl: "https://github.com/shubhook/huddle",
   liveUrl: "https://example.com", // optional
-  previewImage: "/projects/huddle.png",
+  previewImage: huddlePreview,    // import huddlePreview from "@/assets/projects/huddle.png"
 }
 ```
 
-`manifests` lists every `package.json` in the repo you want scanned. For a monorepo, list each app. `fallbackStack` is only used if GitHub can't be reached or nothing is detected.
+Cards show the first six technologies and a "+N" chip for the rest; the expanded card shows all of them.
 
-Screenshots look best at 2880×1800 (1440×900 at 2x). Cards crop from the top.
-
-### How stacks are detected
-
-`src/lib/repo-stack.ts` fetches each manifest from `raw.githubusercontent.com`, collects `dependencies` and `devDependencies`, and checks the repo root for a `Dockerfile` or compose file. `src/lib/tech.ts` then runs each technology's rule over that list. A few examples:
-
-| Technology | Detected from |
-| --- | --- |
-| TypeScript | `typescript` or any `@types/*` package |
-| Bun | `@types/bun` or `bun-types` |
-| PostgreSQL | `pg`, `postgres`, or `@prisma/adapter-pg` |
-| WebSockets | `ws` or `socket.io` |
-| Gemini | `@google/genai` or `@google/generative-ai` |
-| Docker | a `Dockerfile` or compose file at the root |
-
-Results are cached for an hour.
+Screenshots look best at 2880×1800 (1440×900 at 2x). Cards crop from the top. Commit the full-size PNG; Next resizes it and serves AVIF or WebP, so visitors download a few kilobytes, not the original.
 
 ### Adding a technology
 
-1. Add a key to `TechKey` in `src/lib/tech.ts`, plus an entry in `TECH` with a display name and a `detect` rule.
+1. Add a key to `TechKey` in `src/lib/tech.ts`, plus its display name in `TECH_NAME`.
 2. Import its icon from `simple-icons` in `src/components/tech.tsx` and add it to `ICONS`. Search [simpleicons.org](https://simpleicons.org) for the export name; it's `si` plus the slug, for example `siSvelte`.
 
 Icons render in `currentColor`, so they follow the theme instead of using brand colours.

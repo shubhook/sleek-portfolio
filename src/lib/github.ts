@@ -23,8 +23,9 @@ export async function getContributions(
 ): Promise<Contributions | null> {
   const res = await fetch(`https://github.com/users/${user}/contributions`, {
     next: { revalidate: 3600 },
-  });
-  if (!res.ok) return null;
+    signal: AbortSignal.timeout(4000),
+  }).catch(() => null);
+  if (!res?.ok) return null;
   const html = await res.text();
 
   const counts = new Map<string, number>();

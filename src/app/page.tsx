@@ -4,6 +4,7 @@ import {
   LinkedinLogo,
   XLogo,
 } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import { Heatmap } from "@/components/heatmap";
@@ -17,8 +18,7 @@ export default function HomePage() {
   return (
     <>
       <div className="hero">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="avatar" src="/avatar.jpg" alt="" width={72} height={72} />
+        <Image className="avatar" src="/avatar.jpg" alt="" width={72} height={72} loading="eager" />
         <div>
           <h1>Shubham Khakha</h1>
           <p className="role">

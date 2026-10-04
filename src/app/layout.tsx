@@ -11,7 +11,7 @@ const hanken = localFont({
   src: "../fonts/HankenGrotesk.woff2",
   variable: "--font-hanken",
   display: "swap",
-  weight: "100 900",
+  weight: "400 700",
 });
 
 export const metadata: Metadata = {

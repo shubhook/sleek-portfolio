@@ -1,3 +1,7 @@
+import type { StaticImageData } from "next/image";
+
+import huddlePreview from "@/assets/projects/huddle.png";
+import skillsyncPreview from "@/assets/projects/skillsync.png";
 import { SITE } from "@/lib/site";
 import type { TechKey } from "@/lib/tech";
 
@@ -9,12 +13,10 @@ export type Project = {
   dek: string;
   about: string;
   highlights: string[];
-  repo: string;
-  manifests: string[];
-  fallbackStack: TechKey[];
+  stack: TechKey[];
   codeUrl: string;
   liveUrl?: string;
-  previewImage: string;
+  previewImage: StaticImageData;
 };
 
 export const WORK = [
@@ -47,11 +49,9 @@ export const PROJECTS: Project[] = [
       "Redis pub/sub keeps several API processes in sync",
       "Email or GitHub sign-in, revoked server-side on logout",
     ],
-    repo: "shubhook/huddle",
-    manifests: ["package.json", "apps/server/package.json", "apps/web/package.json"],
-    fallbackStack: ["typescript", "bun", "express", "websocket", "postgres", "redis"],
+    stack: ["typescript", "bun", "express", "websocket", "postgres", "redis"],
     codeUrl: SITE.huddleRepo,
-    previewImage: "/projects/huddle.png",
+    previewImage: huddlePreview,
   },
   {
     slug: "skillsync",
@@ -67,11 +67,9 @@ export const PROJECTS: Project[] = [
       "Bookmarks with Markdown export",
       "Shareable links that reproduce the same results",
     ],
-    repo: "shubhook/skillsync.ai",
-    manifests: ["backend/package.json", "frontend/package.json"],
-    fallbackStack: ["typescript", "react", "vite", "tailwind", "express", "gemini"],
+    stack: ["typescript", "react", "vite", "tailwind", "express", "gemini"],
     codeUrl: SITE.skillsyncRepo,
     liveUrl: SITE.skillsyncLive,
-    previewImage: "/projects/skillsync.png",
+    previewImage: skillsyncPreview,
   },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 
@@ -30,13 +31,13 @@ export function SiteHeader({ posts }: { posts: PostMeta[] }) {
     <header className={cn("site-header", home && "home")}>
       {!home ? (
         <Link className="brand" href="/" aria-label="Home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             className="brand-photo"
             src="/avatar.jpg"
             alt=""
             width={28}
             height={28}
+            loading="eager"
           />
         </Link>
       ) : null}
