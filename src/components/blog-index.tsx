@@ -1,74 +1,101 @@
 "use client";
 
-import { Calendar, Rss } from "lucide-react";
+import { Calendar, Check, ListFilter, Rss, X } from "lucide-react";
 import { Link } from "next-view-transitions";
-import * as React from "react";
+import { useSearchParams } from "next/navigation";
 
 import { ReadMore } from "@/components/search-dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { POSTS, type PostTag } from "@/lib/content";
-import { blogFilterSchema, type BlogFilter } from "@/lib/schemas";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { PostMeta } from "@/lib/posts";
+import { cn } from "@/lib/utils";
 
-const FILTERS: { value: BlogFilter; label: string; tag?: PostTag }[] = [
-  { value: "latest", label: "Latest" },
-  { value: "building", label: "Building", tag: "building" },
-  { value: "agents", label: "Agents", tag: "agents" },
-  { value: "notes", label: "Notes", tag: "notes" },
-];
+type Props = {
+  posts: PostMeta[];
+  tags: { name: string; count: number }[];
+};
 
-function count(tag?: PostTag) {
-  if (!tag) return POSTS.length;
-  return POSTS.filter((post) => post.tags.includes(tag)).length;
+function setTag(tag: string | null) {
+  const url = new URL(window.location.href);
+  if (tag) url.searchParams.set("tag", tag);
+  else url.searchParams.delete("tag");
+  window.history.replaceState(null, "", url);
 }
 
-function filtered(value: BlogFilter) {
-  if (value === "latest") return POSTS;
-  return POSTS.filter((post) => post.tags.includes(value));
+export function BlogIndex(props: Props) {
+  const param = useSearchParams().get("tag");
+  const active = props.tags.some((tag) => tag.name === param) ? param : null;
+  return <BlogList {...props} active={active} />;
 }
 
-export function BlogIndex() {
-  const [filter, setFilter] = React.useState<BlogFilter>("latest");
-  const posts = filtered(filter);
+export function BlogList({ posts, tags, active }: Props & { active: string | null }) {
+  const shown = active ? posts.filter((post) => post.tags.includes(active)) : posts;
 
   return (
     <>
       <div className="toolbar">
-        <Tabs
-          value={filter}
-          onValueChange={(value) => {
-            const parsed = blogFilterSchema.safeParse(value);
-            if (parsed.success) setFilter(parsed.data);
-          }}
-        >
-          <TabsList>
-            {FILTERS.map((item) => (
-              <TabsTrigger key={item.value} value={item.value}>
-                {item.label} <span className="n">{count(item.tag)}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {FILTERS.map((item) => (
-            <TabsContent key={item.value} value={item.value} className="hidden" />
-          ))}
-        </Tabs>
+        <div className="filter">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className={cn("btn soft", active && "accent")}
+                aria-label={active ? `Filtered by ${active}. Change filter` : "Filter by tag"}
+              >
+                <ListFilter size={14} /> {active ? `#${active}` : "Filter"}
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="filter-menu">
+              <DropdownMenuItem onSelect={() => setTag(null)}>
+                <span>All posts</span>
+                <span className="n">{posts.length}</span>
+                <span className="check">{active ? null : <Check size={14} />}</span>
+              </DropdownMenuItem>
+              {tags.map((tag) => (
+                <DropdownMenuItem key={tag.name} onSelect={() => setTag(tag.name)}>
+                  <span>#{tag.name}</span>
+                  <span className="n">{tag.count}</span>
+                  <span className="check">
+                    {active === tag.name ? <Check size={14} /> : null}
+                  </span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {active ? (
+            <button
+              type="button"
+              className="filter-clear"
+              onClick={() => setTag(null)}
+              aria-label="Clear filter"
+            >
+              <X size={14} />
+            </button>
+          ) : null}
+        </div>
         <a className="btn soft" href="/feed.xml">
           <Rss size={14} /> RSS
         </a>
       </div>
-      {posts.map((post) => (
+      {shown.map((post) => (
         <Link className="card" href={`/blog/${post.slug}`} key={post.slug}>
           <div>
             <h3>{post.title}</h3>
-            <p className="dek">{post.dek}</p>
+            <p className="dek">{post.description}</p>
             <div className="meta">
-              {post.tags.map((tag) => (
-                <span className="chip" key={tag}>
-                  {tag}
-                </span>
-              ))}
               <span className="date">
                 <Calendar size={12} /> {post.dateLabel}
               </span>
+              <span>{post.minutes} min</span>
+              {post.tags.map((tag) => (
+                <span className="tag" key={tag}>
+                  #{tag}
+                </span>
+              ))}
             </div>
           </div>
           <ReadMore />

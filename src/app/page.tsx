@@ -7,23 +7,18 @@ import {
 import { Link } from "next-view-transitions";
 
 import { Heatmap } from "@/components/heatmap";
-import { PageShell } from "@/components/page-shell";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadMore } from "@/components/search-dialog";
-import { SiteHeader } from "@/components/site-header";
-import { POSTS, WORK } from "@/lib/content";
+import { WORK } from "@/lib/content";
+import { getPosts } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 
 export default function HomePage() {
   return (
-    <PageShell>
-      <SiteHeader />
+    <>
       <div className="hero">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="avatar" src="/avatar.jpg" alt="" width={72} height={72} />
-        <Link className="brand" href="/">
-          sk
-        </Link>
         <div>
           <h1>Shubham Khakha</h1>
           <p className="role">
@@ -42,9 +37,6 @@ export default function HomePage() {
         <li>
           <strong>SkillSync</strong> matches project ideas to a stack. The generated
           todo app was getting old.
-        </li>
-        <li>
-          <strong>Artify</strong> died in public. The repo is still there.
         </li>
       </ul>
       <div className="cta">
@@ -83,11 +75,11 @@ export default function HomePage() {
       </section>
       <section className="section">
         <h2>Writing</h2>
-        {POSTS.slice(0, 3).map((post) => (
+        {getPosts().slice(0, 3).map((post) => (
           <Link className="card" href={`/blog/${post.slug}`} key={post.slug}>
             <div>
               <h3>{post.title}</h3>
-              <p className="dek">{post.dek}</p>
+              <p className="dek">{post.description}</p>
             </div>
             <ReadMore />
           </Link>
@@ -104,6 +96,6 @@ export default function HomePage() {
       </section>
       <QuoteCard />
       <SiteFooter left="© 2026 Shubham Khakha" right={SITE.githubHandle} />
-    </PageShell>
+    </>
   );
 }

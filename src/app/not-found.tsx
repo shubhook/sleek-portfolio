@@ -1,12 +1,8 @@
 import { Link } from "next-view-transitions";
 
-import { PageShell } from "@/components/page-shell";
-import { SiteHeader } from "@/components/site-header";
-
 export default function NotFound() {
   return (
-    <PageShell>
-      <SiteHeader />
+    <>
       <div className="page-head">
         <h1>Missing</h1>
         <p>That page is not here.</p>
@@ -16,6 +12,6 @@ export default function NotFound() {
           Home
         </Link>
       </div>
-    </PageShell>
+    </>
   );
 }

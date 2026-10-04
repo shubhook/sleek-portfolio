@@ -1,21 +1,21 @@
-import { POSTS } from "@/lib/content";
+import { getPosts } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 
 export async function GET() {
-  const items = POSTS.map(
+  const items = getPosts().map(
     (post) => `    <item>
       <title>${escapeXml(post.title)}</title>
-      <link>https://${SITE.domain}/blog/${post.slug}</link>
+      <link>${SITE.url}/blog/${post.slug}</link>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <description>${escapeXml(post.dek)}</description>
+      <description>${escapeXml(post.description)}</description>
     </item>`,
   ).join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
   <channel>
-    <title>Shubham Khakha</title>
-    <link>https://${SITE.domain}</link>
+    <title>${escapeXml(SITE.name)}</title>
+    <link>${SITE.url}</link>
     <description>Notes on building.</description>
 ${items}
   </channel>

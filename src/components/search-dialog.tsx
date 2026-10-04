@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { Link } from "next-view-transitions";
 import * as React from "react";
@@ -8,24 +8,26 @@ import * as React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { POSTS, PROJECTS } from "@/lib/content";
+import { PROJECTS } from "@/lib/content";
+import type { PostMeta } from "@/lib/posts";
 
-function hits(query: string) {
+function hits(query: string, allPosts: PostMeta[]) {
   const q = query.trim().toLowerCase();
-  const posts = POSTS.filter(
-    (post) =>
-      !q ||
-      post.title.toLowerCase().includes(q) ||
-      post.dek.toLowerCase().includes(q),
-  ).map((post) => ({
-    href: `/blog/${post.slug}`,
-    kicker: "Post",
-    title: post.title,
-    dek: post.dateLabel,
-  }));
+  if (!q) return [];
+  const posts = allPosts
+    .filter(
+      (post) =>
+        post.title.toLowerCase().includes(q) ||
+        post.description.toLowerCase().includes(q),
+    )
+    .map((post) => ({
+      href: `/blog/${post.slug}`,
+      kicker: "Post",
+      title: post.title,
+      dek: post.dateLabel,
+    }));
   const projects = PROJECTS.filter(
     (project) =>
-      !q ||
       project.name.toLowerCase().includes(q) ||
       project.dek.toLowerCase().includes(q),
   ).map((project) => ({
@@ -39,12 +41,15 @@ function hits(query: string) {
 
 function SearchResults({
   query,
+  posts,
   onPick,
 }: {
   query: string;
+  posts: PostMeta[];
   onPick: () => void;
 }) {
-  const items = hits(query);
+  if (!query.trim()) return null;
+  const items = hits(query, posts);
   if (items.length === 0) {
     return <p className="mt-4 text-sm text-[var(--muted)]">Nothing matches.</p>;
   }
@@ -61,7 +66,7 @@ function SearchResults({
   );
 }
 
-export function SearchButton() {
+export function SearchButton({ posts }: { posts: PostMeta[] }) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const wide = useMediaQuery("(min-width: 640px)");
@@ -91,7 +96,7 @@ export function SearchButton() {
         onChange={(event) => setQuery(event.target.value)}
         autoFocus
       />
-        <SearchResults query={query} onPick={() => setOpenAndReset(false)} />
+      <SearchResults query={query} posts={posts} onPick={() => setOpenAndReset(false)} />
     </>
   );
 
@@ -101,43 +106,24 @@ export function SearchButton() {
         <MagnifyingGlass size={14} />
         <kbd>⌘K</kbd>
       </button>
-      {wide ? (
-        <Dialog open={open} onOpenChange={setOpenAndReset}>
-          <DialogContent>
-            <DialogTitle>Search</DialogTitle>
-            {body}
-          </DialogContent>
-        </Dialog>
-      ) : (
-        <Drawer open={open} onOpenChange={setOpenAndReset}>
-          <DrawerContent>
-            <DrawerTitle>Search</DrawerTitle>
-            {body}
-          </DrawerContent>
-        </Drawer>
-      )}
+      {open ? (
+        wide ? (
+          <Dialog open={open} onOpenChange={setOpenAndReset}>
+            <DialogContent>
+              <DialogTitle>Search</DialogTitle>
+              {body}
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <Drawer open={open} onOpenChange={setOpenAndReset}>
+            <DrawerContent>
+              <DrawerTitle>Search</DrawerTitle>
+              {body}
+            </DrawerContent>
+          </Drawer>
+        )
+      ) : null}
     </>
-  );
-}
-
-export function PostMeta({
-  dateLabel,
-  tags,
-}: {
-  dateLabel: string;
-  tags?: string[];
-}) {
-  return (
-    <div className="meta">
-      {tags?.map((tag) => (
-        <span key={tag} className="chip">
-          {tag}
-        </span>
-      ))}
-      <span className="date">
-        <Calendar size={12} /> {dateLabel}
-      </span>
-    </div>
   );
 }
 

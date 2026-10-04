@@ -1,3 +1,11 @@
+function siteUrl() {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "http://localhost:3000";
+}
+
 export const SITE = {
   name: "Shubham Khakha",
   email: "khakhashubham@gmail.com",
@@ -6,5 +14,8 @@ export const SITE = {
   twitter: "https://x.com/",
   linkedin: "https://www.linkedin.com/",
   resume: "https://drive.google.com",
-  domain: "khakha.dev",
+  url: siteUrl(),
+  huddleRepo: "https://github.com/shubhook/huddle",
+  skillsyncRepo: "https://github.com/shubhook/skillsync.ai",
+  skillsyncLive: "https://aiskillsync.vercel.app",
 } as const;

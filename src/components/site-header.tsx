@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { SearchButton } from "@/components/search-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
+import type { PostMeta } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +15,7 @@ const NAV = [
   { href: "/projects", label: "Projects" },
 ] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ posts }: { posts: PostMeta[] }) {
   const pathname = usePathname();
   const home = pathname === "/";
   const active = home
@@ -28,8 +29,15 @@ export function SiteHeader() {
   return (
     <header className={cn("site-header", home && "home")}>
       {!home ? (
-        <Link className="brand" href="/">
-          sk
+        <Link className="brand" href="/" aria-label="Home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="brand-photo"
+            src="/avatar.jpg"
+            alt=""
+            width={28}
+            height={28}
+          />
         </Link>
       ) : null}
       <nav className="nav">
@@ -53,7 +61,7 @@ export function SiteHeader() {
         </a>
       </nav>
       <div className="tools">
-        <SearchButton />
+        <SearchButton posts={posts} />
         <ThemeToggle />
       </div>
     </header>

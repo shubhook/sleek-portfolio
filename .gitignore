@@ -43,8 +43,6 @@ next-env.d.ts
 # bun
 bun-debug.log*
 
-# design process dumps (locked crops live in design/locked/)
-/design/shots/
-/design/fonts/Geist*
-/design/fonts/Newsreader*
-/design/fonts/HankenGrotesk-*.woff2
+# local-only: design explorations and helper scripts
+/design/
+/scripts/

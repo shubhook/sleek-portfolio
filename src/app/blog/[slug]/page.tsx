@@ -1,13 +1,12 @@
 import { ArrowLeft, Calendar } from "lucide-react";
 import type { Metadata } from "next";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
-import { PageShell } from "@/components/page-shell";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadMore } from "@/components/search-dialog";
-import { SiteHeader } from "@/components/site-header";
-import { getNextPost, getPost, POSTS } from "@/lib/content";
+import { getNextPost, getPost, getPosts } from "@/lib/posts";
 import { postSlugSchema } from "@/lib/schemas";
 import { SITE } from "@/lib/site";
 
@@ -15,16 +14,18 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return POSTS.map((post) => ({ slug: post.slug }));
+  return getPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const parsed = postSlugSchema.safeParse(slug);
-  if (!parsed.success) return { title: "Post" };
-  const post = getPost(parsed.data);
-  return { title: post?.title ?? "Post" };
+  const post = parsed.success ? getPost(parsed.data) : undefined;
+  if (!post) return { title: "Post" };
+  return { title: post.title, description: post.description };
 }
 
 export default async function PostPage({ params }: Props) {
@@ -34,12 +35,9 @@ export default async function PostPage({ params }: Props) {
   const post = getPost(parsed.data);
   if (!post) notFound();
   const next = getNextPost(post.slug);
-  const beforeQuote = post.quote ? post.body.slice(0, 2) : post.body;
-  const afterQuote = post.quote ? post.body.slice(2) : [];
 
   return (
-    <PageShell>
-      <SiteHeader />
+    <>
       <div className="page-head">
         <Link className="btn soft" href="/blog">
           <ArrowLeft size={14} /> Blog
@@ -51,20 +49,14 @@ export default async function PostPage({ params }: Props) {
           <span className="date">
             <Calendar size={12} /> {post.dateLabel}
           </span>
-          {post.tags.map((tag) => (
-            <span className="chip" key={tag}>
-              {tag}
-            </span>
-          ))}
           <span>{post.minutes} min</span>
+          {post.tags.map((tag) => (
+            <Link className="tag" href={`/blog?tag=${encodeURIComponent(tag)}`} key={tag}>
+              #{tag}
+            </Link>
+          ))}
         </div>
-        {beforeQuote.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-        {post.quote ? <div className="quote">{post.quote}</div> : null}
-        {afterQuote.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+        <MDXRemote source={post.content} />
       </article>
       {next ? (
         <section className="section">
@@ -72,7 +64,7 @@ export default async function PostPage({ params }: Props) {
           <Link className="card" href={`/blog/${next.slug}`}>
             <div>
               <h3>{next.title}</h3>
-              <p className="dek">{next.dek}</p>
+              <p className="dek">{next.description}</p>
             </div>
             <ReadMore />
           </Link>
@@ -80,6 +72,6 @@ export default async function PostPage({ params }: Props) {
       ) : null}
       <QuoteCard />
       <SiteFooter left={post.dateLabel} right={SITE.email} />
-    </PageShell>
+    </>
   );
 }
