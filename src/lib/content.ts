@@ -51,6 +51,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["typescript", "bun", "express", "websocket", "postgres", "redis"],
     codeUrl: SITE.huddleRepo,
+    liveUrl: SITE.huddleLive,
     previewImage: huddlePreview,
   },
   {

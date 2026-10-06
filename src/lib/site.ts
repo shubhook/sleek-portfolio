@@ -16,6 +16,7 @@ export const SITE = {
   resume: "https://drive.google.com",
   url: siteUrl(),
   huddleRepo: "https://github.com/shubhook/huddle",
+  huddleLive: "https://chatonhuddle.vercel.app",
   skillsyncRepo: "https://github.com/shubhook/skillsync.ai",
   skillsyncLive: "https://aiskillsync.vercel.app",
 } as const;
