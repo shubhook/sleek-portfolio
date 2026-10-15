@@ -673,6 +673,49 @@ h1 {
   color: var(--muted);
 }
 
+.article img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.article p:has(> img) + p > em:only-child {
+  display: block;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--muted);
+}
+
+.article p:has(> img) + p {
+  margin-top: 10px;
+}
+
+.article table {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.article th,
+.article td {
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.article th {
+  font-weight: 600;
+  color: var(--muted);
+}
+
 .article code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.9em;
