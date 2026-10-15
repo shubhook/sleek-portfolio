@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
+import remarkGfm from "remark-gfm";
 
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadMore } from "@/components/search-dialog";
@@ -56,7 +57,10 @@ export default async function PostPage({ params }: Props) {
             </Link>
           ))}
         </div>
-        <MDXRemote source={post.content} />
+        <MDXRemote
+          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          source={post.content}
+        />
       </article>
       {next ? (
         <section className="section">
