@@ -5,6 +5,7 @@ import { ViewTransitions } from "next-view-transitions";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
 import { getPosts } from "@/lib/posts";
+import { SITE } from "@/lib/site";
 import "./globals.css";
 
 const hanken = localFont({
@@ -20,6 +21,17 @@ export const metadata: Metadata = {
     template: "%s · Shubham Khakha",
   },
   description: "I write software.",
+  metadataBase: new URL(SITE.url),
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    title: SITE.name,
+    description: "I write software.",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 const themeScript = `try{if(localStorage.theme==='dark')document.documentElement.classList.add('dark')}catch(e){}`;
