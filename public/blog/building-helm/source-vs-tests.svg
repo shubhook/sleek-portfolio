@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 210" role="img" aria-label="Lines of source and test code. helm-text has 2,102 lines of source and 5,710 lines of tests. helm-editor has 2,472 lines of source and 3,367 lines of tests.">
+  <style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:13px;fill:#737376}.s{fill:#111;font-weight:500}.g{stroke:#ececef;stroke-width:1}</style>
+  <rect width="520" height="210" rx="12" fill="#ffffff"/>
+  <g transform="translate(20 20)">
+    <rect x="0" y="0" width="10" height="10" rx="2" fill="#6b75f0"/><text x="16" y="10">Source</text>
+    <rect x="76" y="0" width="10" height="10" rx="2" fill="#e0a56b"/><text x="92" y="10">Tests</text>
+    <g transform="translate(0 26)">
+      <line class="g" x1="100" y1="10" x2="100" y2="140"/>
+      <line class="g" x1="216.7" y1="10" x2="216.7" y2="140"/>
+      <line class="g" x1="333.3" y1="10" x2="333.3" y2="140"/>
+      <line class="g" x1="450" y1="10" x2="450" y2="140"/>
+      <text x="100" y="158" text-anchor="middle">0</text>
+      <text x="216.7" y="158" text-anchor="middle">2,000</text>
+      <text x="333.3" y="158" text-anchor="middle">4,000</text>
+      <text x="450" y="158" text-anchor="middle">6,000</text>
+      <text x="90" y="48" text-anchor="end" class="s">helm-text</text>
+      <rect x="100" y="20" width="122.6" height="20" rx="2" fill="#6b75f0"/><text x="228" y="35">2,102</text>
+      <rect x="100" y="44" width="333.1" height="20" rx="2" fill="#e0a56b"/><text x="427" y="59" text-anchor="end" style="fill:#ffffff">5,710</text>
+      <text x="90" y="113" text-anchor="end" class="s">helm-editor</text>
+      <rect x="100" y="85" width="144.2" height="20" rx="2" fill="#6b75f0"/><text x="250" y="100">2,472</text>
+      <rect x="100" y="109" width="196.4" height="20" rx="2" fill="#e0a56b"/><text x="302" y="124">3,367</text>
+    </g>
+  </g>
+</svg>
