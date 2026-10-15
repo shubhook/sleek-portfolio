@@ -26,7 +26,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const parsed = postSlugSchema.safeParse(slug);
   const post = parsed.success ? getPost(parsed.data) : undefined;
   if (!post) return { title: "Post" };
-  return { title: post.title, description: post.description };
+  return {
+    title: post.title,
+    description: post.description,
+    alternates: { canonical: `/blog/${post.slug}` },
+    openGraph: {
+      type: "article",
+      siteName: SITE.name,
+      title: post.title,
+      description: post.description,
+      url: `/blog/${post.slug}`,
+      publishedTime: post.date,
+      authors: [SITE.name],
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+    },
+  };
 }
 
 export default async function PostPage({ params }: Props) {
