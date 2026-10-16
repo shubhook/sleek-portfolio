@@ -1,4 +1,5 @@
 import {
+  Coffee,
   EnvelopeSimple,
   GithubLogo,
   LinkedinLogo,
@@ -31,12 +32,12 @@ export default function HomePage() {
       </p>
       <ul className="facts">
         <li>
-          On <strong>Huddle</strong>, a live team chat I started because I wanted a
-          websocket to fail in my own terminal.
+          <strong>Helm</strong> is a Rust code editor for macOS. Agents write the code
+          and I review every PR.
         </li>
         <li>
-          <strong>SkillSync</strong> matches project ideas to a stack. The generated
-          todo app was getting old.
+          <strong>Milo</strong> runs AI teammates on your own machine, each with its own
+          memory and a computer it can use.
         </li>
       </ul>
       <div className="cta">
@@ -51,6 +52,9 @@ export default function HomePage() {
         </a>
         <a className="btn" href={SITE.linkedin} target="_blank" rel="noreferrer">
           <LinkedinLogo size={14} /> LinkedIn
+        </a>
+        <a className="btn coffee" href={SITE.buyMeACoffee} target="_blank" rel="noreferrer">
+          <Coffee size={14} /> Buy me a coffee
         </a>
       </div>
       <section className="section">
