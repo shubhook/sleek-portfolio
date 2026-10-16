@@ -11,7 +11,7 @@ export const SITE = {
   email: "khakhashubham@gmail.com",
   github: "https://github.com/shubhook",
   githubHandle: "shubhook",
-  twitter: "https://x.com/",
+  twitter: "https://x.com/khakha_x",
   linkedin: "https://www.linkedin.com/in/shubham-khakha/",
   buyMeACoffee: "https://buymeacoffee.com/khakha_",
   resume: "https://drive.google.com/file/d/1w1IkEKSGNM2adiIW4-t81JbhPeFBevcr/view?usp=sharing",
