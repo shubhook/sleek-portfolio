@@ -13,6 +13,7 @@ export const SITE = {
   githubHandle: "shubhook",
   twitter: "https://x.com/",
   linkedin: "https://www.linkedin.com/",
+  buyMeACoffee: "https://buymeacoffee.com/khakha_",
   resume: "https://drive.google.com",
   url: siteUrl(),
   huddleRepo: "https://github.com/shubhook/huddle",

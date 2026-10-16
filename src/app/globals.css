@@ -265,6 +265,18 @@ body {
   box-shadow: none;
 }
 
+.btn.coffee {
+  background: #ffdd00;
+  color: #0d0c22;
+  border-color: #ffdd00;
+  box-shadow: none;
+}
+
+.btn.coffee:hover {
+  background: #ffe433;
+  border-color: #ffe433;
+}
+
 .pills {
   display: flex;
   align-items: center;
