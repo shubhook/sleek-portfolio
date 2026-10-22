@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Link } from "next-view-transitions";
 
 import { Heatmap } from "@/components/heatmap";
+import { OpenSource } from "@/components/open-source";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadMore } from "@/components/search-dialog";
 import { WORK } from "@/lib/content";
@@ -94,6 +95,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+      <OpenSource />
       <section className="section">
         <h2>GitHub</h2>
         <Heatmap />

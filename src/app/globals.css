@@ -38,6 +38,8 @@
   --heat-2: color-mix(in oklab, var(--accent) 52%, var(--heat-0));
   --heat-3: color-mix(in oklab, var(--accent) 76%, var(--heat-0));
   --heat-4: var(--accent);
+  --pr-merged: #8250df;
+  --pr-open: #1a7f37;
   --background: var(--bg);
   --foreground: var(--ink);
 }
@@ -64,6 +66,8 @@
   --heat-2: color-mix(in oklab, var(--accent) 52%, var(--heat-0));
   --heat-3: color-mix(in oklab, var(--accent) 76%, var(--heat-0));
   --heat-4: var(--accent);
+  --pr-merged: #a371f7;
+  --pr-open: #3fb950;
 }
 
 @theme inline {
@@ -1064,6 +1068,96 @@ h1 {
 
 .heat svg:hover rect:hover {
   opacity: 1;
+}
+
+.pr {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  column-gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.pr:last-of-type {
+  border-bottom: 1px solid var(--line);
+}
+
+.pr-icon {
+  margin-top: 4px;
+}
+
+.pr-icon.merged {
+  fill: var(--pr-merged);
+}
+
+.pr-icon.open {
+  fill: var(--pr-open);
+}
+
+.pr-main {
+  min-width: 0;
+}
+
+.pr-title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: inherit;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.pr-title:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pr-repo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted);
+}
+
+.pr-repo img {
+  border-radius: 4px;
+  background: var(--chip);
+}
+
+.pr-repo a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pr-repo a:hover {
+  color: var(--ink);
+}
+
+.pr .when {
+  font-size: 13px;
+  line-height: 24px;
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .pr {
+    grid-template-columns: 16px 1fr;
+  }
+
+  .pr .when {
+    grid-column: 2;
+    text-align: left;
+    line-height: 20px;
+    margin-top: 4px;
+  }
 }
 
 .heat-caption {
