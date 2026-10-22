@@ -162,6 +162,82 @@ body {
   view-transition-name: site-tools;
 }
 
+.icon-btn.menu-btn {
+  display: none;
+}
+
+/* Grows out of the menu button's corner. Radix keeps it mounted until the closing animation ends. */
+.nav-menu {
+  min-width: 160px;
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+
+.nav-menu[data-state="open"] {
+  animation: nav-menu-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-menu[data-state="closed"] {
+  animation: nav-menu-out 140ms ease-in forwards;
+}
+
+.nav-menu[data-state="open"] [data-slot="dropdown-menu-item"] {
+  animation: nav-menu-item-in 260ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.nav-menu [data-slot="dropdown-menu-item"]:nth-child(2) {
+  animation-delay: 30ms;
+}
+
+.nav-menu [data-slot="dropdown-menu-item"]:nth-child(3) {
+  animation-delay: 60ms;
+}
+
+.nav-menu [data-slot="dropdown-menu-item"]:nth-child(4) {
+  animation-delay: 90ms;
+}
+
+@keyframes nav-menu-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-4px);
+  }
+}
+
+@keyframes nav-menu-out {
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-2px);
+  }
+}
+
+@keyframes nav-menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu[data-state="open"],
+  .nav-menu[data-state="open"] [data-slot="dropdown-menu-item"] {
+    animation: none;
+  }
+
+  .nav-menu[data-state="closed"] {
+    animation-duration: 1ms;
+  }
+}
+
+.nav-menu [data-slot="dropdown-menu-item"] {
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nav-menu [data-slot="dropdown-menu-item"].on {
+  color: var(--ink);
+}
+
 .search,
 .icon-btn,
 .btn,
@@ -821,8 +897,28 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  /* Phones swap the links for the menu button. */
   .nav {
-    gap: 14px;
+    display: none;
+  }
+
+  .icon-btn.menu-btn {
+    display: inline-flex;
+  }
+
+  .tools {
+    grid-column: -2;
+  }
+
+  /* Touch screens have no ⌘K, so search becomes a plain icon button. */
+  .search {
+    width: 28px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .search kbd {
+    display: none;
   }
 
   .card {
