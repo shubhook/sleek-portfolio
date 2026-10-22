@@ -19,20 +19,38 @@ export type Project = {
   previewImage: StaticImageData;
 };
 
-export const WORK = [
+export type Work = {
+  org: string;
+  role: string;
+  when: string;
+  building?: boolean;
+  codeUrl: string;
+  liveUrl?: string;
+};
+
+export const WORK: Work[] = [
+  {
+    org: "Helm",
+    role: "Rust code editor for macOS",
+    when: "2026",
+    building: true,
+    codeUrl: SITE.helmRepo,
+  },
   {
     org: "Huddle",
     role: "Live team chat",
     when: "2026",
-    now: true,
+    codeUrl: SITE.huddleRepo,
+    liveUrl: SITE.huddleLive,
   },
   {
     org: "SkillSync",
     role: "Project ideas matched to a stack",
     when: "2025 to 2026",
-    now: false,
+    codeUrl: SITE.skillsyncRepo,
+    liveUrl: SITE.skillsyncLive,
   },
-] as const;
+];
 
 export const PROJECTS: Project[] = [
   {

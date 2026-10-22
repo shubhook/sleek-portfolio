@@ -6,6 +6,7 @@
       "name": "khakha-next",
       "dependencies": {
         "@phosphor-icons/react": "^2.1.10",
+        "@primer/octicons-react": "^19.41.0",
         "@radix-ui/react-dialog": "^1.1.23",
         "@radix-ui/react-dropdown-menu": "^2.1.24",
         "@radix-ui/react-popover": "^1.1.23",
@@ -223,6 +224,8 @@
     "@nolyfill/is-core-module": ["@nolyfill/is-core-module@1.0.39", "", {}, "sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA=="],
 
     "@phosphor-icons/react": ["@phosphor-icons/react@2.1.10", "", { "peerDependencies": { "react": ">= 16.8", "react-dom": ">= 16.8" } }, "sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA=="],
+
+    "@primer/octicons-react": ["@primer/octicons-react@19.41.0", "", { "peerDependencies": { "react": ">=16.3" } }, "sha512-xCZBbQLQ84L4VuLJWH3OC52AyJg7gdbkhcfunIv428HpXxwGceU3XvEuCbufsoyXN7p0UI5PU5i3Pttob9284g=="],
 
     "@radix-ui/primitive": ["@radix-ui/primitive@1.1.7", "", {}, "sha512-rqWnm76nYT8HoNNqEjpgJ7Pw/DrBj5iBTrmEPo6HTX5+VJyBNOqTdv4g89G63HuR5g0AaENoAcH7Is5fF2kZ8Q=="],
 
