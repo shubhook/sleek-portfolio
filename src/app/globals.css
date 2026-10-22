@@ -34,10 +34,10 @@
   --dead-bg: #f6e4e2;
   --soft: #ebebeb;
   --heat-0: #ececec;
-  --heat-1: color-mix(in oklab, var(--accent) 28%, var(--heat-0));
-  --heat-2: color-mix(in oklab, var(--accent) 52%, var(--heat-0));
-  --heat-3: color-mix(in oklab, var(--accent) 76%, var(--heat-0));
-  --heat-4: var(--accent);
+  --heat-1: color-mix(in oklab, var(--ink) 28%, var(--heat-0));
+  --heat-2: color-mix(in oklab, var(--ink) 52%, var(--heat-0));
+  --heat-3: color-mix(in oklab, var(--ink) 76%, var(--heat-0));
+  --heat-4: var(--ink);
   --pr-merged: #8250df;
   --pr-open: #1a7f37;
   --background: var(--bg);
@@ -62,10 +62,10 @@
   --dead-bg: #301616;
   --soft: #1c1c1c;
   --heat-0: #242424;
-  --heat-1: color-mix(in oklab, var(--accent) 28%, var(--heat-0));
-  --heat-2: color-mix(in oklab, var(--accent) 52%, var(--heat-0));
-  --heat-3: color-mix(in oklab, var(--accent) 76%, var(--heat-0));
-  --heat-4: var(--accent);
+  --heat-1: color-mix(in oklab, var(--ink) 28%, var(--heat-0));
+  --heat-2: color-mix(in oklab, var(--ink) 52%, var(--heat-0));
+  --heat-3: color-mix(in oklab, var(--ink) 76%, var(--heat-0));
+  --heat-4: var(--ink);
   --pr-merged: #a371f7;
   --pr-open: #3fb950;
 }
@@ -344,6 +344,23 @@ h1 {
   text-decoration: none;
 }
 
+.email-user {
+  display: inline-block;
+  transition: filter 200ms ease;
+}
+
+.email-user.hidden-text {
+  filter: blur(4px);
+  user-select: none;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .email-user {
+    transition: none;
+  }
+}
+
 .lede {
   margin-top: 20px;
   font-size: 16px;
@@ -393,6 +410,18 @@ h1 {
   column-gap: 24px;
   padding: 16px 0;
   border-top: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+
+.job:hover .org-name {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.job:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .job:last-of-type {
@@ -406,6 +435,11 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.anvil {
+  fill: var(--warn);
+  flex-shrink: 0;
 }
 
 .job .roleline {
@@ -829,6 +863,96 @@ h1 {
   display: flex;
   gap: 8px;
   margin-top: 12px;
+}
+
+/* A band along the bottom of the screen. Text blurs and fades into the page before it reaches the pill. */
+.reading {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: calc(112px + env(safe-area-inset-bottom));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.reading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--bg) 0%,
+    var(--bg) 14%,
+    color-mix(in oklab, var(--bg) 92%, transparent) 24%,
+    color-mix(in oklab, var(--bg) 80%, transparent) 34%,
+    color-mix(in oklab, var(--bg) 65%, transparent) 45%,
+    color-mix(in oklab, var(--bg) 49%, transparent) 56%,
+    color-mix(in oklab, var(--bg) 34%, transparent) 67%,
+    color-mix(in oklab, var(--bg) 20%, transparent) 78%,
+    color-mix(in oklab, var(--bg) 9%, transparent) 89%,
+    color-mix(in oklab, var(--bg) 0%, transparent) 100%
+  );
+  backdrop-filter: blur(6px);
+  mask-image: linear-gradient(to top, rgb(0 0 0 / 1) 0%, rgb(0 0 0 / 1) 30%, rgb(0 0 0 / 0.85) 45%, rgb(0 0 0 / 0.6) 60%, rgb(0 0 0 / 0.35) 75%, rgb(0 0 0 / 0.12) 88%, rgb(0 0 0 / 0) 100%);
+}
+
+.reading.shown {
+  opacity: 1;
+}
+
+.reading-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transform: translateY(8px);
+  transition: transform 200ms ease;
+}
+
+.reading.shown .reading-pill {
+  transform: none;
+}
+
+.reading-track {
+  position: relative;
+  width: 64px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.reading-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform-origin: left;
+}
+
+.reading-label {
+  min-width: 3ch;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading,
+  .reading-pill {
+    transition: none;
+  }
 }
 
 .pcard-backdrop {

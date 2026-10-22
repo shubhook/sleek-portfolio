@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import remarkGfm from "remark-gfm";
 
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
+import { ReadingProgress } from "@/components/reading-progress";
 import { ReadMore } from "@/components/search-dialog";
 import { getNextPost, getPost, getPosts } from "@/lib/posts";
 import { postSlugSchema } from "@/lib/schemas";
@@ -81,6 +82,7 @@ export default async function PostPage({ params }: Props) {
           source={post.content}
         />
       </article>
+      <ReadingProgress />
       {next ? (
         <section className="section">
           <h2>Next</h2>

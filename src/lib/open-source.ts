@@ -1,7 +1,7 @@
 import { SITE } from "@/lib/site";
 
-// PRs to repos owned by these accounts are not outside contributions.
-export const EXCLUDED_OWNERS = ["shubhook", "shiphook"];
+// PRs to repos owned by these accounts are never shown: my own accounts, then friends' repos.
+export const EXCLUDED_OWNERS = ["shubhook", "shiphook", "tushar00045", "shubhamgupta24b-rgb"];
 
 // Entries are "owner/repo" for a whole repo or "owner/repo#123" for one PR. Case does not matter.
 export const HIDDEN: string[] = [];

@@ -16,6 +16,7 @@ export const SITE = {
   buyMeACoffee: "https://buymeacoffee.com/khakha_",
   resume: "https://drive.google.com/file/d/1w1IkEKSGNM2adiIW4-t81JbhPeFBevcr/view?usp=sharing",
   url: siteUrl(),
+  helmRepo: "https://github.com/shubhook/helm",
   huddleRepo: "https://github.com/shubhook/huddle",
   huddleLive: "https://chatonhuddle.vercel.app",
   skillsyncRepo: "https://github.com/shubhook/skillsync.ai",
