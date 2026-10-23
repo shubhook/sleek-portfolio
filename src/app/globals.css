@@ -390,8 +390,9 @@ h1 {
   margin-bottom: 4px;
 }
 
-/* Home section headings read as labels, not rows. */
-.home-page .section h2 {
+/* Section headings above rows read as labels, not rows. */
+.home-page .section h2,
+.next-post h2 {
   font-size: 12px;
   line-height: 16px;
   font-weight: 600;
@@ -613,17 +614,6 @@ h1 {
 
 .article .byline .tag:hover {
   color: var(--ink);
-}
-
-.card .go {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: var(--muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
 }
 
 .page-head {
@@ -862,10 +852,6 @@ h1 {
   .card {
     grid-template-columns: 1fr;
     gap: 10px;
-  }
-
-  .card .go {
-    justify-self: start;
   }
 }
 

@@ -195,9 +195,20 @@ export function ProjectIndex({ projects }: Props) {
   React.useEffect(() => {
     function onMove(event: PointerEvent) {
       pointer.current = { clientX: event.clientX, clientY: event.clientY };
+      const slug = suppressed.current;
+      const rect = originRef.current;
+      if (!slug || !rect) return;
+      const inside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+      // The card's own pointerleave already fired when the panel covered it, so it
+      // cannot clear this flag. Clear it once the pointer is actually outside the card.
+      if (!inside) suppressed.current = null;
     }
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    window.addEventListener("pointermove", onMove, { passive: true, capture: true });
+    return () => window.removeEventListener("pointermove", onMove, { capture: true });
   }, []);
 
   React.useEffect(() => {

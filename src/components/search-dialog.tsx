@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import dynamic from "next/dynamic";
 import * as React from "react";
@@ -46,13 +45,5 @@ export function SearchButton({ posts }: { posts: PostMeta[] }) {
       </button>
       {open ? <SearchPanel posts={posts} onClose={close} /> : null}
     </>
-  );
-}
-
-export function ReadMore() {
-  return (
-    <span className="go">
-      Read more <ArrowRight size={14} />
-    </span>
   );
 }
