@@ -4,7 +4,6 @@ import { ViewTransitions } from "next-view-transitions";
 
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
-import { getPosts } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -46,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ViewTransitions>
           <Providers>
             <div className="wrap">
-              <SiteHeader posts={getPosts()} />
+              <SiteHeader />
               {children}
             </div>
           </Providers>

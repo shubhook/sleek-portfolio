@@ -8,34 +8,22 @@ import Image from "next/image";
 import { siBuymeacoffee } from "simple-icons";
 import { Link } from "next-view-transitions";
 
-import { EmailReveal } from "@/components/email-reveal";
 import { Heatmap } from "@/components/heatmap";
 import { OpenSource } from "@/components/open-source";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
-import { ReadMore } from "@/components/search-dialog";
 import { WORK } from "@/lib/content";
 import { getPosts } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 
-// Anvil from Material Design Icons (Apache 2.0).
-function Anvil() {
-  return (
-    <svg className="anvil" viewBox="0 0 24 24" width={18} height={18} role="img" aria-label="In development">
-      <title>In development</title>
-      <path d="M9 5v5c4.03 2.47-.56 4.97-3 6v3h15v-3c-6.41-2.73-3.53-7 1-8V5zM2 6c.81 2.13 2.42 3.5 5 4V6z" />
-    </svg>
-  );
-}
-
 export default function HomePage() {
   return (
-    <>
+    <main className="home-page">
       <div className="hero">
         <Image className="avatar" src="/avatar.jpg" alt="" width={72} height={72} loading="eager" />
         <div>
           <h1>Shubham Khakha</h1>
           <p className="role">
-            I write software · <EmailReveal email={SITE.email} />
+            I write software
           </p>
         </div>
       </div>
@@ -65,7 +53,7 @@ export default function HomePage() {
         <a className="btn" href={SITE.linkedin} target="_blank" rel="noreferrer">
           <LinkedinLogo size={14} /> LinkedIn
         </a>
-        <a className="btn coffee" href={SITE.buyMeACoffee} target="_blank" rel="noreferrer">
+        <a className="btn" href={SITE.buyMeACoffee} target="_blank" rel="noreferrer">
           <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
             <path d={siBuymeacoffee.path} />
           </svg>{" "}
@@ -85,7 +73,9 @@ export default function HomePage() {
             <div>
               <div className="org">
                 <span className="org-name">{job.org}</span>
-                {job.building ? <Anvil /> : null}
+                <span className="ext" aria-hidden>
+                  ↗
+                </span>
               </div>
               <div className="roleline">{job.role}</div>
             </div>
@@ -106,7 +96,6 @@ export default function HomePage() {
               <h3>{post.title}</h3>
               <p className="dek">{post.description}</p>
             </div>
-            <ReadMore />
           </Link>
         ))}
         <div className="more">
@@ -121,7 +110,14 @@ export default function HomePage() {
         <Heatmap />
       </section>
       <QuoteCard />
-      <SiteFooter left="© 2026 Shubham Khakha" right={SITE.githubHandle} />
-    </>
+      <SiteFooter
+        left="© 2026 Shubham Khakha"
+        right={
+          <a href={SITE.github} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+        }
+      />
+    </main>
   );
 }

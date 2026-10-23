@@ -6,7 +6,7 @@ export const EXCLUDED_OWNERS = ["shubhook", "shiphook", "tushar00045", "shubhamg
 // Entries are "owner/repo" for a whole repo or "owner/repo#123" for one PR. Case does not matter.
 export const HIDDEN: string[] = [];
 
-// Pinned entries are listed first, in this order. The rest follow, newest first.
+// Pinned entries are listed first, in this order. The rest follow, merged before open and newest first.
 export const PINNED: string[] = [];
 
 const REVALIDATE = 6 * 60 * 60;
@@ -78,5 +78,8 @@ export async function getPullRequests(
     const index = matches(PINNED, `${pr.owner}/${pr.repo}`, pr.number);
     return index === -1 ? PINNED.length : index;
   };
-  return prs.sort((a, b) => rank(a) - rank(b) || b.date.localeCompare(a.date));
+  const group = (pr: PullRequest) => (pr.status === "merged" ? 0 : 1);
+  return prs.sort(
+    (a, b) => rank(a) - rank(b) || group(a) - group(b) || b.date.localeCompare(a.date),
+  );
 }

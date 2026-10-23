@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadingProgress } from "@/components/reading-progress";
-import { ReadMore } from "@/components/search-dialog";
+import { ReadMore } from "@/components/read-more";
 import { getNextPost, getPost, getPosts } from "@/lib/posts";
 import { postSlugSchema } from "@/lib/schemas";
 import { SITE } from "@/lib/site";

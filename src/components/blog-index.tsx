@@ -4,7 +4,7 @@ import { Calendar, Check, ListFilter, Rss, X } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
 
-import { ReadMore } from "@/components/search-dialog";
+import { ReadMore } from "@/components/read-more";
 import {
   DropdownMenu,
   DropdownMenuContent,
