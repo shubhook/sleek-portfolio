@@ -6,6 +6,7 @@ import { AnimatePresence, LazyMotion, m, MotionConfig, useIsPresent } from "moti
 import { getImageProps } from "next/image";
 import * as React from "react";
 
+import { Anvil } from "@/components/anvil";
 import { TechList, TechRow } from "@/components/tech";
 import type { Project } from "@/lib/content";
 import type { TechKey } from "@/lib/tech";
@@ -17,6 +18,9 @@ const SHRINK = { type: "tween", duration: 0.1, ease: [0.4, 0, 0.2, 1] } as const
 type Props = {
   projects: Project[];
 };
+
+// Where the pointer was when a panel closed. Pointer and click events carry it; Escape does not.
+type At = { clientX: number; clientY: number };
 
 const loadFeatures = () => import("@/components/motion-features").then((mod) => mod.default);
 
@@ -71,7 +75,7 @@ function Expanded({
   stack: TechKey[];
   peek: boolean;
   origin: DOMRect | null;
-  onClose: () => void;
+  onClose: (at?: At) => void;
   onPin: () => void;
 }) {
   const closeRef = React.useRef<HTMLButtonElement>(null);
@@ -102,7 +106,7 @@ function Expanded({
           event.clientX <= origin.right &&
           event.clientY >= origin.top &&
           event.clientY <= origin.bottom;
-        if (!overOrigin) onClose();
+        if (!overOrigin) onClose(event);
       }}
     >
       <m.article
@@ -118,7 +122,7 @@ function Expanded({
         aria-labelledby={`pcard-title-${project.slug}`}
         onClick={(event) => event.stopPropagation()}
         onPointerLeave={(event) => {
-          if (peek && event.pointerType === "mouse") onClose();
+          if (peek && event.pointerType === "mouse") onClose(event);
         }}
       >
         <button
@@ -144,7 +148,10 @@ function Expanded({
               layoutCrossfade={false}
               id={`pcard-title-${project.slug}`}
             >
-              {project.name}{" "}
+              <span className="pcard-name">
+                {project.name}
+                {project.inDevelopment ? <Anvil /> : null}
+              </span>{" "}
               <span className={cn("chip", project.statusKind)}>{project.status}</span>
             </m.h3>
             <m.div
@@ -174,11 +181,24 @@ export function ProjectIndex({ projects }: Props) {
   const [peek, setPeek] = React.useState(false);
   const [origin, setOrigin] = React.useState<DOMRect | null>(null);
   const [returning, setReturning] = React.useState<string | null>(null);
+  const activeRef = React.useRef<string | null>(null);
   const peekRef = React.useRef(false);
+  const originRef = React.useRef<DOMRect | null>(null);
+  const pointer = React.useRef<At | null>(null);
+  // A peek closed while the pointer is still over its card stays shut until the pointer leaves that card.
   const suppressed = React.useRef<string | null>(null);
+  const refocus = React.useRef<string | null>(null);
   const triggers = React.useRef(new Map<string, HTMLButtonElement>());
   const lenis = useLenis();
   const open = projects.find((project) => project.slug === active);
+
+  React.useEffect(() => {
+    function onMove(event: PointerEvent) {
+      pointer.current = { clientX: event.clientX, clientY: event.clientY };
+    }
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -191,16 +211,42 @@ export function ProjectIndex({ projects }: Props) {
     };
   }, [open, lenis]);
 
-  const close = React.useCallback(() => {
-    setActive((slug) => {
-      setReturning(slug);
-      if (slug && peekRef.current) suppressed.current = slug;
-      else if (slug) triggers.current.get(slug)?.focus({ preventScroll: true });
-      return null;
-    });
+  const close = React.useCallback((at?: At) => {
+    const slug = activeRef.current;
+    if (!slug) return;
+    activeRef.current = null;
+    setActive(null);
+    setReturning(slug);
+    if (peekRef.current) {
+      // The panel covers the card, so the card's pointerleave has usually fired already.
+      // Suppressing after the pointer has left would block the next hover with nothing to clear it.
+      const rect = originRef.current;
+      const point = at ?? pointer.current;
+      const overCard =
+        rect &&
+        point &&
+        point.clientX >= rect.left &&
+        point.clientX <= rect.right &&
+        point.clientY >= rect.top &&
+        point.clientY <= rect.bottom;
+      suppressed.current = overCard ? slug : null;
+    } else {
+      refocus.current = slug;
+    }
   }, []);
 
+  // The grid card stays hidden while its panel is open, and focus() on a hidden element does
+  // nothing. Return focus once the card is shown again.
+  React.useEffect(() => {
+    const slug = refocus.current;
+    if (active || !slug) return;
+    refocus.current = null;
+    const id = requestAnimationFrame(() => triggers.current.get(slug)?.focus({ preventScroll: true }));
+    return () => cancelAnimationFrame(id);
+  }, [active]);
+
   const openWith = (slug: string, asPeek: boolean) => {
+    activeRef.current = slug;
     peekRef.current = asPeek;
     setPeek(asPeek);
     setActive(slug);
@@ -212,9 +258,11 @@ export function ProjectIndex({ projects }: Props) {
   }, []);
 
   function onCardEnter(event: React.PointerEvent<HTMLElement>, slug: string) {
-    if (event.pointerType !== "mouse" || active || suppressed.current === slug) return;
+    if (event.pointerType !== "mouse" || activeRef.current || suppressed.current === slug) return;
     if (!window.matchMedia("(hover: hover)").matches) return;
-    setOrigin(event.currentTarget.getBoundingClientRect());
+    const rect = event.currentTarget.getBoundingClientRect();
+    originRef.current = rect;
+    setOrigin(rect);
     openWith(slug, true);
   }
 
@@ -260,7 +308,10 @@ export function ProjectIndex({ projects }: Props) {
               />
               <div className="body">
                 <m.h3 layoutId={`pcard-title-${project.slug}`} layoutCrossfade={false}>
-                  {project.name}{" "}
+                  <span className="pcard-name">
+                    {project.name}
+                    {project.inDevelopment ? <Anvil /> : null}
+                  </span>{" "}
                   <span className={cn("chip", project.statusKind)}>{project.status}</span>
                 </m.h3>
                 <p>{project.dek}</p>

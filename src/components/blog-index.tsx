@@ -1,10 +1,9 @@
 "use client";
 
-import { Calendar, Check, ListFilter, Rss, X } from "lucide-react";
-import { Link } from "next-view-transitions";
+import { Check, ListFilter, Rss, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-import { ReadMore } from "@/components/read-more";
+import { PostRow } from "@/components/post-row";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,24 +81,7 @@ export function BlogList({ posts, tags, active }: Props & { active: string | nul
         </a>
       </div>
       {shown.map((post) => (
-        <Link className="card" href={`/blog/${post.slug}`} key={post.slug}>
-          <div>
-            <h3>{post.title}</h3>
-            <p className="dek">{post.description}</p>
-            <div className="meta">
-              <span className="date">
-                <Calendar size={12} /> {post.dateLabel}
-              </span>
-              <span>{post.minutes} min</span>
-              {post.tags.map((tag) => (
-                <span className="tag" key={tag}>
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-          <ReadMore />
-        </Link>
+        <PostRow post={post} meta key={post.slug} />
       ))}
     </>
   );

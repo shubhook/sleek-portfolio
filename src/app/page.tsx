@@ -8,8 +8,10 @@ import Image from "next/image";
 import { siBuymeacoffee } from "simple-icons";
 import { Link } from "next-view-transitions";
 
+import { Anvil } from "@/components/anvil";
 import { Heatmap } from "@/components/heatmap";
 import { OpenSource } from "@/components/open-source";
+import { PostRow } from "@/components/post-row";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { WORK } from "@/lib/content";
 import { getPosts } from "@/lib/posts";
@@ -53,7 +55,7 @@ export default function HomePage() {
         <a className="btn" href={SITE.linkedin} target="_blank" rel="noreferrer">
           <LinkedinLogo size={14} /> LinkedIn
         </a>
-        <a className="btn" href={SITE.buyMeACoffee} target="_blank" rel="noreferrer">
+        <a className="btn coffee" href={SITE.buyMeACoffee} target="_blank" rel="noreferrer">
           <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
             <path d={siBuymeacoffee.path} />
           </svg>{" "}
@@ -73,9 +75,7 @@ export default function HomePage() {
             <div>
               <div className="org">
                 <span className="org-name">{job.org}</span>
-                <span className="ext" aria-hidden>
-                  ↗
-                </span>
+                {job.inDevelopment ? <Anvil /> : null}
               </div>
               <div className="roleline">{job.role}</div>
             </div>
@@ -91,12 +91,7 @@ export default function HomePage() {
       <section className="section">
         <h2>Writing</h2>
         {getPosts().slice(0, 3).map((post) => (
-          <Link className="card" href={`/blog/${post.slug}`} key={post.slug}>
-            <div>
-              <h3>{post.title}</h3>
-              <p className="dek">{post.description}</p>
-            </div>
-          </Link>
+          <PostRow post={post} key={post.slug} />
         ))}
         <div className="more">
           <Link className="btn soft" href="/blog">

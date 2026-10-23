@@ -14,6 +14,7 @@ export type Project = {
   about: string;
   highlights: string[];
   stack: TechKey[];
+  inDevelopment?: boolean;
   codeUrl: string;
   liveUrl?: string;
   previewImage: StaticImageData;
@@ -23,7 +24,7 @@ export type Work = {
   org: string;
   role: string;
   when: string;
-  building?: boolean;
+  inDevelopment?: boolean;
   codeUrl: string;
   liveUrl?: string;
 };
@@ -33,7 +34,7 @@ export const WORK: Work[] = [
     org: "Helm",
     role: "Rust code editor for macOS",
     when: "2026",
-    building: true,
+    inDevelopment: true,
     codeUrl: SITE.helmRepo,
   },
   {

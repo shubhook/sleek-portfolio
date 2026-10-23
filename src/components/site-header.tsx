@@ -4,7 +4,9 @@ import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 
+import { SearchButton } from "@/components/search-dialog";
 import { ThemeToggle } from "@/components/theme-toggle";
+import type { PostMeta } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +16,7 @@ const NAV = [
   { href: "/projects", label: "Projects" },
 ] as const;
 
-export function SiteHeader() {
+export function SiteHeader({ posts }: { posts: PostMeta[] }) {
   const pathname = usePathname();
   const home = pathname === "/";
   const isOn = (href: string) => (href === "/" ? home : pathname.startsWith(href));
@@ -48,6 +50,7 @@ export function SiteHeader() {
         </a>
       </nav>
       <div className="tools">
+        <SearchButton posts={posts} />
         <ThemeToggle />
       </div>
     </header>
