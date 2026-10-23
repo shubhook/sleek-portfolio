@@ -5,9 +5,9 @@ import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 import remarkGfm from "remark-gfm";
 
+import { PostRow } from "@/components/post-row";
 import { QuoteCard, SiteFooter } from "@/components/quote-card";
 import { ReadingProgress } from "@/components/reading-progress";
-import { ReadMore } from "@/components/search-dialog";
 import { getNextPost, getPost, getPosts } from "@/lib/posts";
 import { postSlugSchema } from "@/lib/schemas";
 import { SITE } from "@/lib/site";
@@ -84,15 +84,9 @@ export default async function PostPage({ params }: Props) {
       </article>
       <ReadingProgress />
       {next ? (
-        <section className="section">
+        <section className="section next-post">
           <h2>Next</h2>
-          <Link className="card" href={`/blog/${next.slug}`}>
-            <div>
-              <h3>{next.title}</h3>
-              <p className="dek">{next.description}</p>
-            </div>
-            <ReadMore />
-          </Link>
+          <PostRow post={next} />
         </section>
       ) : null}
       <QuoteCard />
